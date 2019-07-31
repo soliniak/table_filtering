@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pl-PL">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+	<link rel="stylesheet" type="text/css" href="reset.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+      <title>Filtering and sorting table by multiple arguments || Vanilla JS</title>
+</head>
+
+<body>
+      
+<section class="table__container">
+	<div class="filter">
+		<div class="filter__option option-condignation">
+			<div class="filter__placeholder">
+				<span class="placeholder__value">kondygnacja</span>
+				
+				<button class="btn-expand" aria-expanded="false"><i class="fa fa-angle-down"></i></button>
+			</div>
+			<ul class="options" aria-hidden="true">
+				<li class="options__item">
+					<input type="checkbox" class="filter__checkbox" value="parter" id="parter" name="floor"> 
+					<label for="parter" class="checkbox__title">parter</label>
+				</li>
+				<li class="options__item">
+					<input type="checkbox" class="filter__checkbox" value="piętro" id="pietro" name="floor"> 
+					<label for="pietro" class="checkbox__title">piętro</label>
+				</li>
+			</ul>
+		</div>
+		<div class="filter__option option-back">
+			<div class="filter__placeholder">ogródek / strych
+				<button class="btn-expand" aria-expanded="false"><i class="fa fa-angle-down"></i></button>
+			</div>
+			<ul class="options" aria-hidden="true">
+				<li class="options__item">
+					<input type="checkbox" class="filter__checkbox" value="ogródek" id="ogrodek" name="gardenOrAttic"> 
+					<label for="ogrodek" class="checkbox__title">ogródek</label>
+				</li>
+				<li class="options__item">
+					<input type="checkbox" class="filter__checkbox" value="strych" id="strych" name="gardenOrAttic"> 
+					<label for="strych" class="checkbox__title">strych</label>
+				</li>
+			</ul>
+		</div>
+		<div class="filter__option option-status">
+			<div class="filter__placeholder">status
+				<button class="btn-expand" aria-expanded="false"><i class="fa fa-angle-down"></i></button>
+			</div>
+			<ul class="options" aria-hidden="true">
+				<li class="options__item">
+					<input type="checkbox" class="filter__checkbox" value="wolny" id="wolny" name="status"> 
+					<label for="wolny" class="checkbox__title">wolny</label>
+				</li>
+				<li class="options__item">
+					<input type="checkbox" class="filter__checkbox" value="rezerwacja" id="rezerwacja" name="status"> 
+					<label for="rezerwacja" class="checkbox__title">rezerwacja</label>
+				</li>
+				<li class="options__item">
+					<input type="checkbox" class="filter__checkbox" value="sprzedany" id="sprzedany" name="status"> 
+					<label for="sprzedany" class="checkbox__title">sprzedany</label>
+				</li>
+			</ul>
+		</div>
+		<div class="filter__option option-price">
+			<div class="filter__placeholder">cena
+				<button class="btn-expand" aria-expanded="false"><i class="fa fa-angle-down"></i></button>
+			</div>
+			<ul class="options" aria-hidden="true">
+				<li class="options__item">
+					<input type="checkbox" class="filter__checkbox" value="250000" id="250000" name="price">
+					<label for="250000" class="checkbox__title">do 250 000</label>
+				</li>
+				<li class="options__item">
+					<input type="checkbox" class="filter__checkbox" value="500000" id="500000" name="price"> 
+					<label for="500000" class="checkbox__title">do 500 000</label>
+				</li>			
+			</ul>
+		</div>
+		<div class="filter__option filter__option--btn">
+			<button class="btn-filter"> filtruj </button>
+		</div>
+	</div>
+	
+<!-- 	               ######################  TABLE  #######################          -->
+	<table class="data__table">
+		<thead class="data__header">
+			<tr>
+				<th class="header__cell">
+					<div class="th__title">
+						nr budynku mieszkania
+						<div class="sort__buttons" data-name="buildingNo">
+							<i class="fa fa-angle-up sort-asc" data-name="buildingNo" data-order="asc"></i>
+							<i class="fa fa-angle-down sort-desc" data-name="buildingNo" data-order="desc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header__cell">
+					<div class="th__title">
+						kondygnacja
+						<div class="sort__buttons" data-name="floor">
+							<i class="fa fa-angle-up sort-asc" data-name="floor" data-order="asc"></i>
+							<i class="fa fa-angle-down sort-desc" data-name="floor" data-order="desc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header__cell">
+					<div class="th__title">
+						powierzchnia użytkowa
+						<div class="sort__buttons" data-name="areaVolume">
+							<i class="fa fa-angle-up sort-asc" data-name="areaVolume" data-order="asc"></i>
+							<i class="fa fa-angle-down sort-desc" data-name="areaVolume" data-order="desc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header__cell">
+					<div class="th__title">
+						powierzchnia dodatkowa
+						<div class="sort__buttons" data-name="gardenOrAtticVolume">
+							<i class="fa fa-angle-up sort-asc" data-name="gardenOrAtticVolume" data-order="asc"></i>
+							<i class="fa fa-angle-down sort-desc" data-name="gardenOrAtticVolume" data-order="desc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header__cell">
+					<div class="th__title">
+						cena brutto
+						<div class="sort__buttons" data-name="price">
+							<i class="fa fa-angle-up sort-asc" data-name="price" data-order="asc"></i>
+							<i class="fa fa-angle-down sort-desc" data-name="price" data-order="desc"></i>
+						</div>
+					</div>
+				</th>
+				<th class="header__cell">plan</th>
+				<th class="header__cell">
+					<div class="th__title">
+						status
+						<div class="sort__buttons" data-name="status">
+							<i class="fa fa-angle-up sort-asc" data-name="status" data-order="asc"></i>
+							<i class="fa fa-angle-down sort-desc" data-name="status" data-order="desc"></i>
+						</div>
+					</div>
+				</th>
+			</tr>
+		</thead>
+		<tbody class="data__body"></tbody>
+	</table>
+	<div class="footer">
+		<div class="paginator">
+			<div class="page page--info">Brak rekordów</div>
+		</div>
+		<button class="reset--filters page page--active">Resetuj filtry</button>
+	</div>
+</section>
+<script src="script.js"></script>
+<script src="https://use.fontawesome.com/7b0f8a4daa.js"></script>
+
+</body>
