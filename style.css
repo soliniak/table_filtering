@@ -177,7 +177,7 @@ input[type=checkbox]:checked + label::after {
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-  height: 660px;
+  height: 700px;
   max-width: 1200px;
   position: relative;
   padding: 0 2rem;
