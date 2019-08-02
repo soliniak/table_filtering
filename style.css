@@ -27,9 +27,10 @@ sup {
   justify-content: flex-start;
   flex-direction: row;
   width: 100%;
+  z-index: 1000;
 }
 .filter__option {
-  padding: 2rem 2rem 2rem 0;
+  padding: 2rem 2rem 0 0;
   position: relative;
   width: 20%;
 }
@@ -39,7 +40,7 @@ sup {
   justify-content: flex-end;
   flex-direction: row;
   width: 20%;
-  padding: 0;
+  padding: 2rem 0 0 0;
 }
 .filter__placeholder {
   background-color: #e5e5e5;
@@ -302,6 +303,8 @@ input[type=checkbox]:checked + label::after {
   background-color: #5bc0de;
   color: #fff;
   width: auto;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
 }
 .page:hover, .page--active:hover {
   color: #000;
@@ -322,4 +325,46 @@ a, a:hover, a:active, a:visited {
 
 .reset--filters {
   margin-top: 1rem;
+}
+
+.breadcrumbs {
+  width: 100%;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  margin: 0.5rem 0;
+}
+
+.breadrumbs__btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  position: relative;
+  border: 1px solid #cecece;
+  background: #fff;
+  color: #7d7d7d;
+  padding-left: 10px;
+  margin-right: 20px;
+  height: 1.5rem;
+  cursor: pointer;
+}
+.breadrumbs__btn:after {
+  font-family: FontAwesome;
+  content: "";
+  font-size: 10px;
+  display: inline-block;
+  margin-left: 10px;
+  margin-bottom: 1px;
+  width: 15px;
+  color: #54555a;
+}
+.breadrumbs__btn:hover {
+  color: #54555a;
+  border: 1px solid #54555a;
+}
+.breadrumbs__btn:hover:after {
+  color: red;
 }

@@ -71,14 +71,16 @@ filterCheckboxes.forEach(checkbox => {
 				filterBy[e.target.name].splice(index, 1)
 			}
 		}
+		generateBreadcrumbs()
 	})
-	
-	const filterBtn = document.querySelector(".btn-filter")
-	filterBtn.addEventListener("click", () => {
-		page = 1
-		filterTable(filterBy)
-		drawTable(filteredData)
-	})
+})
+
+const filterBtn = document.querySelector(".btn-filter")
+filterBtn.addEventListener("click", () => {
+	page = 1
+	filterTable(filterBy)
+	drawTable(filteredData)
+	generateBreadcrumbs()
 })
 
 const filterTable = () => {
@@ -254,5 +256,34 @@ resetFiltersBtn.addEventListener("click", () => {
 	order = 'asc'
 
 	filterTable(filterBy)
+	generateBreadcrumbs()
 	drawTable(filteredData)
 })
+
+
+/////////////////////// breadcrumbs
+let breadcrumbs = ""
+const breadcrumbsContainer = document.querySelector(".breadcrumbs")
+const generateBreadcrumbs = () => {
+	breadcrumbsContainer.innerHTML = ""
+	Object.entries(filterBy).forEach( ([key, values]) => {
+		values.forEach( value => {
+			breadcrumbsContainer.innerHTML += `<button class="breadrumbs__btn" data-key="${key}">${value}</button>`
+			updateBreadcrumbs();
+		})
+	})
+}
+
+const updateBreadcrumbs = () => {
+	breadcrumbs = breadcrumbsContainer.childNodes;
+	breadcrumbs.forEach( breadcrumb => {
+		breadcrumb.addEventListener("click", () => {
+			const index = filterBy[breadcrumb.dataset.key].indexOf(breadcrumb.textContent)
+			if (index !== -1) {
+				filterBy[breadcrumb.dataset.key].splice(index, 1)
+				document.getElementById(`${breadcrumb.textContent}`).checked = false
+				generateBreadcrumbs()
+			}
+		})
+	})
+}
