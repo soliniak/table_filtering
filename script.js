@@ -31,7 +31,7 @@ const data = [
 	{ buildingNo: "P24 B", floor: "piętro", areaVolume: "94,60", gardenOrAttic: "strych", gardenOrAtticVolume: "35", price: "510000", blueprint: "true", status: "sprzedany" }
 ]
 
-let 	filteredData = data || filteredData, 
+let filteredData = data || filteredData,
 	page = 1,
 	filterBy = {
 		floor: [],
@@ -43,11 +43,11 @@ let 	filteredData = data || filteredData,
 
 const closeDropdowns = () => {
 	const arrows = document.querySelectorAll(".btn-expand i")
-	arrows.forEach( arrow => {
+	arrows.forEach(arrow => {
 		arrow.classList.remove("rotate")
 	})
 	const options = document.querySelectorAll(".options")
-	options.forEach( option => {
+	options.forEach(option => {
 		option.setAttribute("aria-hidden", "true")
 		option.setAttribute("aria-expanded", "false")
 		option.classList.remove("show")
@@ -55,7 +55,7 @@ const closeDropdowns = () => {
 }
 
 const clearSort = () => {
-	document.querySelectorAll(".sort-active").forEach( sortArrow => {
+	document.querySelectorAll(".sort-active").forEach(sortArrow => {
 		sortArrow.classList.remove("sort-active")
 	})
 }
@@ -63,7 +63,7 @@ const clearSort = () => {
 const filterCheckboxes = document.querySelectorAll(".filter__checkbox")
 filterCheckboxes.forEach(checkbox => {
 	checkbox.addEventListener("click", e => {
-		if(!filterBy[e.target.name].includes(e.target.value)) {
+		if (!filterBy[e.target.name].includes(e.target.value)) {
 			filterBy[e.target.name].push(e.target.value)
 		} else {
 			const index = filterBy[e.target.name].indexOf(e.target.value)
@@ -84,21 +84,37 @@ filterBtn.addEventListener("click", () => {
 })
 
 const filterTable = () => {
+
+	// shortcut from 
+	// const filteredData = data
+	// .filter(item => filterBy.status.length
+	// 	? filterBy.status.includes(item.status)
+	// 	: true
+	// )
+	// .filter(item => filterBy.gardenOrAttic.length
+	// 	? filterBy.gardenOrAttic.includes(item.gardenOrAttic)
+	// 	: true
+	// )
+	// .filter(item => filterBy.floor.length
+	// 	? filterBy.floor.includes(item.floor)
+	// 	: true
+	// )
+
 	const filterByKey = key => item => filterBy[key].length
-			? filterBy[key].includes(item[key]) : true
-	
+		? filterBy[key].includes(item[key]) : true
+
 	const filterByPrice = key => item => filterBy[key].length
-			? filterBy[key] > item[key] : true
-	
+		? filterBy[key] > item[key] : true
+
 	filteredData = data
-			.filter(filterByKey("status"))
-			.filter(filterByKey("gardenOrAttic"))
-			.filter(filterByKey("floor"))
-			.filter(filterByPrice("price"))
+		.filter(filterByKey("status"))
+		.filter(filterByKey("gardenOrAttic"))
+		.filter(filterByKey("floor"))
+		.filter(filterByPrice("price"))
 }
 
 const sortButtons = document.querySelectorAll(".sort__buttons")
-sortButtons.forEach( btn => {
+sortButtons.forEach(btn => {
 	btn.addEventListener("click", e => {
 		drawTable(filteredData, e.target.dataset.name, e.target.dataset.order)
 		clearSort();
@@ -109,33 +125,33 @@ sortButtons.forEach( btn => {
 const drawTable = (filteredData, sortBy, order) => {
 	const tableBody = document.querySelector(".data__body"),
 		maxOnPage = 10
-	
+
 	closeDropdowns()
-	
+
 	tableBody.innerHTML = ""
 	appendPaginatorBtns(filteredData)
-	
+
 	filteredData = filteredData
-		.filter((el, index) => 
-			  index <= maxOnPage * page && 
-			  index >= maxOnPage * page - maxOnPage
+		.filter((el, index) =>
+			index <= maxOnPage * page &&
+			index >= maxOnPage * page - maxOnPage
 		)
 		.sort((a, b) => {
-			if(a[sortBy] < b[sortBy]) { 
+			if (a[sortBy] < b[sortBy]) {
 				return order == "desc" ? 1 : -1
 			}
-			if(a[sortBy] > b[sortBy]) { 
+			if (a[sortBy] > b[sortBy]) {
 				return order == "desc" ? -1 : 1
 			}
 			return 0
 		})
 		.forEach(filteredDataRow => {
 			let statusStyle = "";
-			if(filteredDataRow.status == "wolny") { statusStyle = "status-free"}
-			if(filteredDataRow.status == "sprzedany") { statusStyle = "status-sold"}
-			if(filteredDataRow.status == "rezerwacja") { statusStyle = "status-reservation"}
-			
-			const tableRow = 
+			if (filteredDataRow.status == "wolny") { statusStyle = "status-free" }
+			if (filteredDataRow.status == "sprzedany") { statusStyle = "status-sold" }
+			if (filteredDataRow.status == "rezerwacja") { statusStyle = "status-reservation" }
+
+			const tableRow =
 				`<tr class="data__row">
 					<td class="data__cell building-no">
 						${filteredDataRow.buildingNo}
@@ -154,26 +170,26 @@ const drawTable = (filteredData, sortBy, order) => {
 						${filteredDataRow.price.replace(/(\d{3})/g, '$1 ')} zł
 					</td>
 					<td class="data__cell blueprint">
-						${filteredDataRow.blueprint 
-						? "<a href=\"https://youtu.be/dQw4w9WgXcQ\" target=\"_blank\">pobierz</a>" : "XD"}
+						${filteredDataRow.blueprint
+					? "<a href=\"https://youtu.be/dQw4w9WgXcQ\" target=\"_blank\">pobierz</a>" : "XD"}
 					</td>
 					<td class="data__cell status ${statusStyle}">
 						${filteredDataRow.status}
 					</td>	
 				</tr>`
-		tableBody.innerHTML += tableRow
-	})
+			tableBody.innerHTML += tableRow
+		})
 }
 
 const paginator = document.querySelector(".paginator")
 const appendPaginatorBtns = filteredData => {
 	paginator.innerHTML = ""
-	if(filteredData.length) {
+	if (filteredData.length) {
 		const paginatorBtnsQuantity = Math.ceil(filteredData.length / 10)
-		for(let i = 1; i <= paginatorBtnsQuantity; i++){
+		for (let i = 1; i <= paginatorBtnsQuantity; i++) {
 			paginator.innerHTML += `<div class="page page--btn">${i}</div>`
 		}
-		paginator.children[page-1].classList.add("page--active")
+		paginator.children[page - 1].classList.add("page--active")
 	} else {
 		paginator.innerHTML = "<div class=\"page--info\">Brak rekordów</div>"
 	}
@@ -197,41 +213,41 @@ const btnExpandDropdown = document.querySelectorAll(".btn-expand")
 
 btnExpandDropdown.forEach(button => {
 	button.addEventListener("click", e => {
-		
+
 		const topParentOfButton = e.target.parentNode.parentNode,
 			options = topParentOfButton.querySelector(".options"),
 			arrowIndicator = e.target.querySelector("i")
-		
+
 		let autoCloseDropdown = false
-		
-		const closeDropdown = () => {	
+
+		const closeDropdown = () => {
 			options.setAttribute("aria-hidden", "true")
 			options.setAttribute("aria-expanded", "false")
 			options.classList.remove("show")
 			arrowIndicator.classList.remove("rotate")
 			autoCloseDropdown = false
 		}
-		
-		const openDropdown = () => {	
+
+		const openDropdown = () => {
 			options.setAttribute("aria-hidden", "false")
 			options.setAttribute("aria-expanded", "true")
 			options.classList.add("show")
 			arrowIndicator.classList.add("rotate")
 		}
-		
+
 		options.addEventListener("mouseleave", e => {
 			autoCloseDropdown = true
 			window.setTimeout(() => {
-				if(options.classList.contains("show") && autoCloseDropdown) {
+				if (options.classList.contains("show") && autoCloseDropdown) {
 					closeDropdown()
 				}
-			}, 2500)	
+			}, 2500)
 		})
 		options.addEventListener("mouseenter", e => {
 			autoCloseDropdown = false
 		})
-		
-		if(options.classList.contains("show")) {
+
+		if (options.classList.contains("show")) {
 			closeDropdown()
 		} else {
 			openDropdown()
@@ -241,17 +257,17 @@ btnExpandDropdown.forEach(button => {
 
 const resetFiltersBtn = document.querySelector(".reset--filters");
 resetFiltersBtn.addEventListener("click", () => {
-	
-	Object.keys(filterBy).forEach( key => {
+
+	Object.keys(filterBy).forEach(key => {
 		filterBy[key] = []
 	})
-	
+
 	filterCheckboxes.forEach(checkbox => {
 		checkbox.checked = false
 	})
-	
+
 	clearSort();
-	
+
 	sortBy = "buildingNo"
 	order = 'asc'
 
@@ -266,8 +282,8 @@ let breadcrumbs = ""
 const breadcrumbsContainer = document.querySelector(".breadcrumbs")
 const generateBreadcrumbs = () => {
 	breadcrumbsContainer.innerHTML = ""
-	Object.entries(filterBy).forEach( ([key, values]) => {
-		values.forEach( value => {
+	Object.entries(filterBy).forEach(([key, values]) => {
+		values.forEach(value => {
 			breadcrumbsContainer.innerHTML += `<button class="breadrumbs__btn" data-key="${key}">${value}</button>`
 			updateBreadcrumbs();
 		})
@@ -276,7 +292,7 @@ const generateBreadcrumbs = () => {
 
 const updateBreadcrumbs = () => {
 	breadcrumbs = breadcrumbsContainer.childNodes;
-	breadcrumbs.forEach( breadcrumb => {
+	breadcrumbs.forEach(breadcrumb => {
 		breadcrumb.addEventListener("click", () => {
 			const index = filterBy[breadcrumb.dataset.key].indexOf(breadcrumb.textContent)
 			if (index !== -1) {
